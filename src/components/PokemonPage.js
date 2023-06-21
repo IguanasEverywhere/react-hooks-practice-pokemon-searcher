@@ -19,13 +19,26 @@ function PokemonPage() {
     setSearchQuery(e.target.value);
   }
 
+  function addNewPokemon(newPokemon) {
+    fetch('http://localhost:3001/pokemon', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(newPokemon)
+    })
+      .then(r => r.json())
+      .then(addedPokemon => setAllPokemon([...allPokemon, addedPokemon]))
+  }
+
   return (
     <Container>
       <h1>Pokemon Searcher</h1>
       <br />
-      <PokemonForm />
+      <PokemonForm addNewPokemon={addNewPokemon} />
       <br />
-      <Search handleSearchChange={handleSearchChange} searchQuery={searchQuery}/>
+      <Search handleSearchChange={handleSearchChange} searchQuery={searchQuery} />
       <br />
       <PokemonCollection pokemonToRender={allPokemon.filter((poke) => poke.name.includes(searchQuery))} />
     </Container>
